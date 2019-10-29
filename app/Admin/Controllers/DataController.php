@@ -34,7 +34,6 @@ class DataController extends Controller
                 $column->row('8888.88');
             });
         });
-        $content->view('admin', ['data' => 'foo']);
         // $content
         //     ->row(Data::title())
         //     ->row(function (Row $row) {
