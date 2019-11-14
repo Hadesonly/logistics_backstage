@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\driver;
+use App\Models\Driver;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -24,7 +24,7 @@ class DriverController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new driver);
+        $grid = new Grid(new Driver);
 
         $grid->column('id', __('ID'))->sortable();
         $grid->column('name', __('姓名'));
@@ -100,7 +100,7 @@ class DriverController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(driver::findOrFail($id));
+        $show = new Show(Driver::findOrFail($id));
         $show->panel()
         ->style('info')
         ->title('用户基本信息');
@@ -140,7 +140,7 @@ class DriverController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new driver);
+        $form = new Form(new Driver);
 
         $form->display('name', __('真实姓名'));
         $form->display('id_card_num', __('身份证号'));

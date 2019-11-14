@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\trade;
+use App\Models\Trade;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -24,7 +24,7 @@ class TradeController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new trade);
+        $grid = new Grid(new Trade);
 
         $grid->column('trade_id', __('流水ID'));
         $grid->column('amount', __('转入金额'));
@@ -69,7 +69,7 @@ class TradeController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(trade::findOrFail($id));
+        $show = new Show(Trade::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('amount', __('Amount'));
@@ -91,7 +91,7 @@ class TradeController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new trade);
+        $form = new Form(new Trade);
 
         $form->decimal('amount', __('Amount'));
         $form->number('create_time', __('Create time'));

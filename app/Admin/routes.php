@@ -16,6 +16,7 @@ Route::group([
     $router->resource('boss', BossController::class);
     $router->resource('driver', DriverController::class);
     $router->resource('order', OrderController::class);
+    $router->resource('driverorder', DriverOrderController::class);
     $router->resource('trade', TradeController::class);
 
 });

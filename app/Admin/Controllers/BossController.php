@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\boss;
+use App\Models\Boss;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -25,7 +25,7 @@ class BossController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new boss);
+        $grid = new Grid(new Boss);
 
         $grid->column('id', __('ID'))->sortable();
         $grid->column('auth_status', __('认证状态'))->display(function ($auth_status) {
@@ -97,7 +97,7 @@ class BossController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(boss::findOrFail($id));
+        $show = new Show(Boss::findOrFail($id));
         $show->panel()
         ->style('info')
         ->title('用户基本信息');
@@ -134,7 +134,7 @@ class BossController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new boss);
+        $form = new Form(new Boss);
         $form->display('name', __('真实姓名'));
         $form->display('id_card_num', __('身份证号'));
         $form->divider();

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\bossorder;
+use App\Models\BossOrder;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -24,7 +24,7 @@ class OrderController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new bossorder);
+        $grid = new Grid(new BossOrder);
 
         $grid->column('id', __('订单编号'));
         $grid->column('from_name', __('出发地'));
@@ -53,7 +53,7 @@ class OrderController extends AdminController
         $grid->actions(function ($actions) {
 
             // 去掉删除
-            // $actions->disableDelete();
+            $actions->disableDelete();
 
             // 去掉编辑
             $actions->disableEdit();
@@ -72,7 +72,7 @@ class OrderController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(bossorder::findOrFail($id));
+        $show = new Show(BossOrder::findOrFail($id));
         $show->panel()
         ->style('info')
         ->title('订单信息');
@@ -98,7 +98,7 @@ class OrderController extends AdminController
         ->tools(function ($tools) {
             $tools->disableEdit();
             // $tools->disableList();
-            // $tools->disableDelete();
+            $tools->disableDelete();
         });;
 
         return $show;
@@ -111,7 +111,7 @@ class OrderController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new bossorder);
+        $form = new Form(new BossOrder);
 
         $form->number('boss_id', __('Boss id'));
         $form->text('cancel_reason', __('Cancel reason'));

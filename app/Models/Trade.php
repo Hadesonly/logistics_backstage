@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Oct 2019 11:30:42 +0000.
+ * Date: Wed, 30 Oct 2019 01:58:34 +0000.
  */
 
 namespace App\Models;
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  */
 class Trade extends Eloquent
 {
-	protected $table = 'trade';
+	protected $table = 'Trade';
 	public $incrementing = false;
 	public $timestamps = false;
 

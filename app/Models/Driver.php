@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 29 Oct 2019 04:12:30 +0000.
+ * Date: Wed, 30 Oct 2019 01:57:59 +0000.
  */
 
 namespace App\Models;
@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * Class Driver
  * 
  * @property int $id
+ * @property string $auth_fail_reason
  * @property int $auth_status
  * @property string $comment
  * @property int $create_time
- * @property bool $gender
+ * @property int $gender
  * @property string $icon
  * @property string $id_card_back
  * @property string $id_card_front
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  */
 class Driver extends Eloquent
 {
-	protected $table = 'driver';
+	protected $table = 'Driver';
 	public $incrementing = false;
 	public $timestamps = false;
 
@@ -47,10 +48,11 @@ class Driver extends Eloquent
 		'id' => 'int',
 		'auth_status' => 'int',
 		'create_time' => 'int',
-		'gender' => 'bool'
+		'gender' => 'int'
 	];
 
 	protected $fillable = [
+		'auth_fail_reason',
 		'auth_status',
 		'comment',
 		'create_time',
@@ -73,37 +75,39 @@ class Driver extends Eloquent
 		'emergency_contact_name',
 		'vehicle_license'
 	];
+    public static function boot()
+    {
+        parent::boot();
 
-	public static function boot()
-	{
-	    parent::boot();
+        static::saving(function ($model) {
 
-	    static::saving(function ($model) {
+            // $model->auth_status;
+            // $model->comment;
+            if($model->comment == null){
+                $model->comment = "无";
+            }
+            if($model->auth_status == null){
+                $model->auth_status = 2;
+            }
+            $client = curl_init("https://duduhuoyun.cn/api/profile/updateAuthStatus");
 
-	        // $model->auth_status;
-	        // $model->comment;
-	        if($model->comment == null){
-	    		$model->comment = "无";
-	    	}
-	        $client = curl_init("https://duduhuoyun.cn/api/profile/updateAuthStatus");
+            $body = array(
+                "type" => "d",
+                "set_identify_uid" => $model->id,
+                "set_auth_status" => $model->auth_status,
+                "identify_fail_reason" => $model->comment,
+                "set_identity_status_token" => "2R4UENkbreoQWgaNjfGKseGR89i3wirqG3kKXnP4B7vvpwUqCCpn4AiZfeEB9UDd"
+            );
 
-			$body = array(
-			    "type" => "d",
-			    "set_identify_uid" => $model->id,
-			    "set_auth_status" => $model->auth_status,
-			    "identify_fail_reason" => $model->comment,
-			    "set_identity_status_token" => "2R4UENkbreoQWgaNjfGKseGR89i3wirqG3kKXnP4B7vvpwUqCCpn4AiZfeEB9UDd"
-			);
+            curl_setopt($client, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($client, CURLOPT_HEADER, false);
+            curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($client, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
+            curl_setopt($client, CURLOPT_POST, true);
+            curl_setopt($client, CURLOPT_POSTFIELDS, json_encode($body));
+            $resp = curl_exec($client);
+            curl_close($client);
 
-			curl_setopt($client, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($client, CURLOPT_HEADER, false);
-			curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($client, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
-			curl_setopt($client, CURLOPT_POST, true);
-			curl_setopt($client, CURLOPT_POSTFIELDS, json_encode($body));
-			$resp = curl_exec($client);
-			curl_close($client);
-
-	    });
-	}
+        });
+    }
 }
